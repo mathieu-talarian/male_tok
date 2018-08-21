@@ -35,12 +35,13 @@ clean:
 fclean: clean
 	@rm -rfv malloc
 
+LIBFTDIR = lib/libft
 .libft: 
-	make -C libft
+	make -C $(LIBFTDIR)
 .libftclean:
-	make clean -C libft
+	make clean -C $(LIBFTDIR)
 .libftfclean:
-	make fclean -C libft
+	make fclean -C $(LIBFTDIR)
 
 retest: fclean test
 

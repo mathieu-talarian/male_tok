@@ -11,7 +11,7 @@
 #include <sys/resource.h>
 #include <sys/mman.h>
 
-#include "../libft/libft.h"
+#include "../lib/libft/libft.h"
 
 #define T_RSIZE 1048576
 #define T_MSIZE 512 // tiny Maxsize
