@@ -24,6 +24,6 @@ void *ft_malloc(size_t size)
         if (!debug())
             return (NULL);
     }
-    g_env.func_m[get_type(size)](NULL, size);
+    g_env.func_m[get_type(size)](size);
     return NULL;
 }

@@ -85,6 +85,7 @@ void *large_m(size_t size);
 
 void *search_free_chunk(t_zone *zone, int type, size_t size);
 void *expand_zone(t_zone *zone, int type, size_t size);
+void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size);
 
 int debug();
 #endif

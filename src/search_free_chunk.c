@@ -1,6 +1,6 @@
 #include "malloc.h"
 
-static void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
+void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
 {
     t_chunk *new;
     size_t res;
