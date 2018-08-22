@@ -27,7 +27,7 @@ static void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
         cc->size = size;
     }
     UNFREE_IT(cc->free);
-    return NULL;
+    return (void *)(cc + 1);
 }
 
 void *search_free_chunk(t_zone *zone, int t, size_t size)
