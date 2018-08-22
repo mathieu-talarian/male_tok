@@ -1,7 +1,16 @@
 NAME= malloc
 SRC_PATH= src
 SRC_NAME= malloc.c \
-		init_env.c
+		init_env.c \
+		set_tiny.c \
+		set_small.c \
+		tiny_m.c \
+		small_m.c\
+		large_m.c \
+		mmmap.c \
+		search_free_chunk.c \
+		expand_zone.c \
+		debug.c
 
 OBJ_PATH= obj
 
@@ -15,6 +24,8 @@ OBJ_NAME = $(SRC_NAME:.c=.o)
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
+LIBFTDIR = lib/libft
+
 
 all: $(NAME)
 
@@ -25,7 +36,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 		$(CC) $(CFLAGS) $(IC) -o $@ -c $<
 
 test: .libft $(OBJ) 
-	$(CC) main_test/main.c obj/*.o $(IC) -o malloc
+	$(CC) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
 	./malloc
 
 clean:
@@ -35,7 +46,6 @@ clean:
 fclean: clean
 	@rm -rfv malloc
 
-LIBFTDIR = lib/libft
 .libft: 
 	make -C $(LIBFTDIR)
 .libftclean:
