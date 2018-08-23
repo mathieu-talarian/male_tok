@@ -77,7 +77,8 @@ int init_env();
 void *set_tiny();
 void *set_small();
 
-void *mmmap(size_t size);
+void *map(size_t size);
+int unmap(void *ptr, size_t size);
 
 void *tiny_m(size_t size);
 void *small_m(size_t size);
@@ -86,6 +87,9 @@ void *large_m(size_t size);
 void *search_free_chunk(t_zone *zone, int type, size_t size);
 void *expand_zone(t_zone *zone, int type, size_t size);
 void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size);
+
+void ft_free(void *prt);
+void defrag();
 
 int debug();
 #endif

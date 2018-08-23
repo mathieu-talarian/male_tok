@@ -3,6 +3,9 @@
 
 int main(void)
 {
-    ft_malloc(12);
+    void *ptr = ft_malloc(12);
+    ft_malloc(513);
+    ft_malloc(15361);
+    ft_free(ptr);
     return (0);
 }

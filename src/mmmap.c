@@ -1,6 +1,11 @@
 #include "malloc.h"
 
-void *mmmap(size_t size)
+int unmap(void *ptr, size_t size)
+{
+    munmap(ptr, size);
+}
+
+void *map(size_t size)
 {
     void *ret;
 

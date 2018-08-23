@@ -2,7 +2,7 @@
 
 void *tiny_m(size_t size)
 {
-    printf("%zu\n", g_env.tiny->head->size);
+    printf("TINY MALLOC | %zu\n", g_env.tiny->head->size);
     void *ret;
 
     if ((ret = search_free_chunk(g_env.tiny, TINY, size)) != NULL)

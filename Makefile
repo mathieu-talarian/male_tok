@@ -1,6 +1,7 @@
 NAME= malloc
 SRC_PATH= src
-SRC_NAME= malloc.c \
+SRC_NAME= \
+		malloc.c \
 		init_env.c \
 		set_tiny.c \
 		set_small.c \
@@ -10,6 +11,8 @@ SRC_NAME= malloc.c \
 		mmmap.c \
 		search_free_chunk.c \
 		expand_zone.c \
+		free.c \
+		defrag.c \
 		debug.c
 
 OBJ_PATH= obj
@@ -35,7 +38,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 		@mkdir $(OBJ_PATH) 2> /dev/null || true
 		$(CC) $(CFLAGS) $(IC) -o $@ -c $<
 
-test: .libft $(OBJ) 
+test: .libft $(OBJ)
 	$(CC) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
 	./malloc
 
@@ -46,7 +49,7 @@ clean:
 fclean: clean
 	@rm -rfv malloc
 
-.libft: 
+.libft:
 	make -C $(LIBFTDIR)
 .libftclean:
 	make clean -C $(LIBFTDIR)
