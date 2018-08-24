@@ -2,7 +2,7 @@
 
 int unmap(void *ptr, size_t size)
 {
-    munmap(ptr, size);
+    return munmap(ptr, size);
 }
 
 void *map(size_t size)

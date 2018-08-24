@@ -1,5 +1,20 @@
 #include "malloc.h"
 
+void *fusion_block(t_zone *cz, t_chunk *chunk, int t, size_t size)
+{
+    t_chunk *tmp;
+
+    printf("%p\n", cz);
+    tmp = chunk->next;
+    chunk->size += tmp->size + sizeof(t_chunk);
+    chunk->next = tmp->next;
+    if (chunk->next)
+        chunk->next->previous = chunk;
+    else
+        cz->tail = chunk;
+    return NULL;
+}
+
 void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
 {
     t_chunk *new;

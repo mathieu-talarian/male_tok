@@ -13,6 +13,10 @@
 
 #include "../lib/libft/libft.h"
 
+#define MALLOC(x) ft_malloc(x)
+#define FREE(x) ft_free(x)
+#define REALLOC ft_realloc
+
 #define T_RSIZE 256 * 4096 // 512 * pagesize
 #define T_MSIZE 512        // tiny Maxsize
 
@@ -27,6 +31,7 @@
 #define DEBUG_ON(x) (x |= DEBUG_MASK)
 #define DEBUG_OFF(x) (x ^= DEBUG_MASK)
 #define IS_DEBUG(x) (x & DEBUG_MASK ? 1 : 0)
+#define D IS_DEBUG(g_env.env)
 
 #define E g_env
 #define Z t_zone
@@ -73,6 +78,9 @@ typedef struct s_env t_env;
 extern t_env g_env;
 
 void *ft_malloc(size_t size);
+void *ft_realloc(void *ptr, size_t size);
+void ft_free(void *ptr);
+
 int init_env();
 void *set_tiny();
 void *set_small();
@@ -87,8 +95,20 @@ void *large_m(size_t size);
 void *search_free_chunk(t_zone *zone, int type, size_t size);
 void *expand_zone(t_zone *zone, int type, size_t size);
 void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size);
+void *fusion_block(t_zone *cz, t_chunk *cc, int t, size_t size);
 
-void ft_free(void *prt);
+int in_chunk(t_chunk *z_head, t_chunk *searched_chunk);
+
+// REALLOC
+void *tiny_realloc(void *ptr, t_chunk *chunk, size_t size);
+void *small_realloc(void *ptr, t_chunk *chunk, size_t size);
+void *large_realloc(void *ptr, t_chunk *chunk, size_t size);
+
+size_t have_enough_space(t_chunk *chunk, size_t size);
+
+void *find_zone(t_zone *head, t_chunk *searched);
+void *find_chunk(t_chunk *head, t_chunk *searched);
+
 void defrag();
 
 int debug();

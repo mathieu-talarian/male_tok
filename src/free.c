@@ -1,14 +1,17 @@
 #include "malloc.h"
 
-static int in_chunk(t_zone *current_zone, t_chunk *current_chunk)
+int in_chunk(t_chunk *z_head, t_chunk *searched_chunk)
 {
     t_chunk *cc;
 
-    cc = current_zone->head;
+    cc = z_head;
     while (cc)
     {
-        if (cc == current_chunk)
+        if (cc == searched_chunk)
+        {
             FREE_IT(cc->free);
+            return 1;
+        }
         cc = cc->next;
     }
     return 0;
@@ -23,7 +26,7 @@ static int in_zone(t_zone *head, t_chunk *chunk)
     {
         printf("%p | %p | %p | %d\n", current_zone->head, current_zone->tail, chunk, current_zone->head <= chunk);
         if (current_zone->head <= chunk && chunk <= current_zone->tail)
-            return in_chunk(current_zone, chunk) ? 1 : 0;
+            return in_chunk(current_zone->head, chunk) ? 1 : 0;
         current_zone = current_zone->next;
     }
     return 0;

@@ -9,7 +9,7 @@ static void *create_large_chunk(size_t size)
     printf("ps = %zu", PS);
     cur = g_env.large;
     size = (((size + sizeof(t_chunk)) / g_env.pagesize) + 1) * g_env.pagesize;
-    if ((new = mmmap(size)) != NULL)
+    if ((new = map(size)) != NULL)
     {
         new->size = size - sizeof(t_chunk);
         new->free = 0;

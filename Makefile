@@ -13,7 +13,11 @@ SRC_NAME= \
 		expand_zone.c \
 		free.c \
 		defrag.c \
-		debug.c
+		debug.c \
+		realloc.c \
+		tiny_realloc.c \
+		small_realloc.c \
+		realloc_utils.c
 
 OBJ_PATH= obj
 

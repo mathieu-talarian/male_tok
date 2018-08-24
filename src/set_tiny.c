@@ -22,7 +22,7 @@ void *set_tiny()
     size_t size;
 
     size = set_tiny_zone();
-    if ((zone = mmmap(size)) != NULL)
+    if ((zone = map(size)) != NULL)
     {
         zone->next = NULL;
         zone->previous = NULL;
