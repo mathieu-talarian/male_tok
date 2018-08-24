@@ -5,8 +5,6 @@ static void *create_large_chunk(size_t size)
     t_chunk *cur;
     t_chunk *new;
 
-    printf("size = %zu | t_chunk = %zu\n", size, sizeof(t_chunk));
-    printf("ps = %zu", PS);
     cur = g_env.large;
     size = (((size + sizeof(t_chunk)) / g_env.pagesize) + 1) * g_env.pagesize;
     if ((new = map(size)) != NULL)

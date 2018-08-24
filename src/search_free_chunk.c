@@ -20,6 +20,8 @@ void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
     t_chunk *new;
     size_t res;
 
+    if (D)
+        printf("split block | t = %d | p = %d\n", t, g_cpt[t]);
     if (t == TINY)
         res = 16;
     else if (t == SMALL)

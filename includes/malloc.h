@@ -75,6 +75,7 @@ struct s_env
 };
 typedef struct s_env t_env;
 
+extern int g_cpt[3];
 extern t_env g_env;
 
 void *ft_malloc(size_t size);
@@ -108,6 +109,7 @@ size_t have_enough_space(t_chunk *chunk, size_t size);
 
 void *find_zone(t_zone *head, t_chunk *searched);
 void *find_chunk(t_chunk *head, t_chunk *searched);
+void *move_and_free(void *ptr, size_t chunk_size, size_t size);
 
 void defrag();
 

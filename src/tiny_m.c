@@ -2,9 +2,10 @@
 
 void *tiny_m(size_t size)
 {
-    printf("TINY MALLOC | %zu\n", g_env.tiny->head->size);
     void *ret;
 
+    if (D)
+        printf("Tiny malloc | %d\n", ++g_cpt[TINY]);
     if ((ret = search_free_chunk(g_env.tiny, TINY, size)) != NULL)
         return ret;
     return (expand_zone(g_env.tiny, TINY, size));

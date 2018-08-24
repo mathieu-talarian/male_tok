@@ -14,7 +14,7 @@ void *ft_realloc(void *ptr, size_t size)
 
     addr = NULL;
     if (!ptr)
-        return NULL;
+        return MALLOC(size);
     if (!size)
     {
         FREE(ptr);

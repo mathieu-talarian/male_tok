@@ -7,6 +7,7 @@ int in_chunk(t_chunk *z_head, t_chunk *searched_chunk)
     cc = z_head;
     while (cc)
     {
+        printf("%p | %p\n", cc, searched_chunk);
         if (cc == searched_chunk)
         {
             FREE_IT(cc->free);
@@ -73,7 +74,7 @@ static void unmap_zone(t_zone *current)
 
 void ft_free(void *ptr)
 {
-    printf("ft_free00\n");
+    printf("ft_free\n");
     t_chunk *chunk;
     t_zone *zone;
 
