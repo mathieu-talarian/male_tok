@@ -24,8 +24,6 @@ void *set_tiny()
     size = set_tiny_zone();
     if ((zone = map(size)) != NULL)
     {
-        if (D)
-            printf("set tiny -> %p\n", zone);
         zone->next = NULL;
         zone->previous = NULL;
         zone->head = (void *)(zone + 1);
