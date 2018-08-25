@@ -1,12 +1,5 @@
 #include "malloc.h"
 
-void *large_realloc(void *ptr, t_chunk *chunk, size_t size)
-{
-    if (D)
-        printf("Large realloc\n");
-    return NULL;
-}
-
 void *ft_realloc(void *ptr, size_t size)
 {
     t_chunk *chunk;

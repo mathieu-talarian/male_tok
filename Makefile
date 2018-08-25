@@ -17,7 +17,9 @@ SRC_NAME= \
 		realloc.c \
 		tiny_realloc.c \
 		small_realloc.c \
-		realloc_utils.c
+		large_r.c \
+		realloc_utils.c \
+		show_alloc_mem.c
 
 OBJ_PATH= obj
 

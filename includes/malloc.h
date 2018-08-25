@@ -27,6 +27,8 @@
 #define SMALL 1
 #define LARGE 2
 
+#define UL unsigned long long
+
 #define DEBUG_MASK (1 << 3)
 #define DEBUG_ON(x) (x |= DEBUG_MASK)
 #define DEBUG_OFF(x) (x ^= DEBUG_MASK)
@@ -110,6 +112,8 @@ size_t have_enough_space(t_chunk *chunk, size_t size);
 void *find_zone(t_zone *head, t_chunk *searched);
 void *find_chunk(t_chunk *head, t_chunk *searched);
 void *move_and_free(void *ptr, size_t chunk_size, size_t size);
+
+void show_alloc_mem();
 
 void defrag();
 

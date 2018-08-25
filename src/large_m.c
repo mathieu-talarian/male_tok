@@ -30,6 +30,7 @@ static void *create_large_chunk(size_t size)
 
 void *large_m(size_t size)
 {
-    printf("LARGE MALLOC\n");
+    if (D)
+        printf("LARGE MALLOC\n");
     return (create_large_chunk(size));
 }

@@ -12,7 +12,7 @@ void *fusion_block(t_zone *cz, t_chunk *chunk, int t, size_t size)
         chunk->next->previous = chunk;
     else
         cz->tail = chunk;
-    return NULL;
+    return (split_block(cz, chunk, t, size));
 }
 
 void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)

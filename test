@@ -1,0 +1,3 @@
+make -C lib/libft
+make[1]: Nothing to be done for `all'.
+gcc main_test/main.c obj/*.o -Iincludes -o malloc -Llib/libft -lft
