@@ -6,18 +6,6 @@ static void print_total(UL total)
     ft_putnbr_ull_endl(total);
 }
 
-static UL ull_max(UL t, UL s, UL l)
-{
-    if (t == s && l == s && l == 0)
-        return (0);
-    else if (l > s && l > t)
-        return (l);
-    else if (s > l && s > t)
-        return (s);
-    else
-        return (t);
-}
-
 static UL min(UL a, UL b, UL c)
 {
     asm("cmp   %1,%0\n"
@@ -31,6 +19,8 @@ static UL min(UL a, UL b, UL c)
 
 static void *_min(void *a, void *b, void *c, UL min)
 {
+    printf("%llu - %llu - %llu - %llu\n", (UL)a, (UL)b, (UL)c, min);
+
     if (min == (UL)a)
         return a;
     else if (min == (UL)b)
@@ -58,25 +48,92 @@ static void *addr_min(void *tiny, void *small, void *large)
     return _min(tiny, small, large, min(t, s, l));
 }
 
-static void printf_z(UL *total, int type, t_zone *zone, t_zone **z)
+static void printf_l(UL *total, int type, t_chunk *chunk, t_chunk **c)
+{
+    // *c = chunk->next;
+}
+
+static int add_len(UL add)
+{
+    int len;
+
+    len = 0;
+    while (add)
+    {
+        add /= 16;
+        len++;
+    }
+    return (len);
+}
+
+static char *nbr_to_hex_str(UL add)
+{
+    char *str;
+    int i;
+    int r;
+    char *dt;
+
+    i = add_len(add);
+    dt = "0123456789abcdef";
+    str = map(i + 1);
+    str[i] = 0;
+
+    while (add)
+    {
+        i--;
+        r = add % 16;
+        str[i] = dt[r];
+        add /= 16;
+    }
+    return (str);
+}
+
+static void print_add(void *add)
+{
+    char *str;
+
+    ft_putstr("0x");
+    str = nbr_to_hex_str((UL)add);
+    ft_putstr(str);
+    munmap(str, ft_strlen(str) + 1);
+}
+
+static void printf_c(t_chunk *chunk, UL *total)
+{
+    print_add((void *)(chunk + 1));
+    ft_putstr(" - ");
+    print_add((void *)(chunk + 1) + chunk->size);
+    ft_putstr(" : ");
+    ft_putnbr_ull(chunk->size);
+    if (chunk->size > 1)
+        ft_putendl(" octets");
+    else
+        ft_putendl(" octet");
+    *total += chunk->size;
+}
+
+static void printf_z(UL *total, int type, t_zone **zone)
 {
     t_chunk *chunk;
     size_t size;
+    t_zone *z;
 
+    z = *zone;
     size = 0;
-    chunk = zone->head;
+    chunk = z->head;
     if (type == TINY)
         ft_putstr("TINY : ");
     else
-        pt_putstr("SMALL : ");
+        ft_putstr("SMALL : ");
     print_add((void *)zone);
-    ft_puchar('\n');
+    ft_putchar('\n');
     while (chunk)
     {
         if (!IS_FREE(chunk->free))
             printf_c(chunk, total);
         chunk = chunk->next;
     }
+    *zone = z->next;
 }
 
 static void print_zones(UL *total)
@@ -84,15 +141,20 @@ static void print_zones(UL *total)
     void *min;
     t_zone *t;
     t_zone *s;
-    t_zone *l;
+    t_chunk *l;
 
+    t = g_env.tiny;
+    s = g_env.small;
+    l = g_env.large;
     while ((min = addr_min(t, s, l)))
+    {
         if (min == t)
-            printf_z(total, TINY, t, &t);
+            printf_z(total, TINY, &t);
         else if (min == s)
-            printf_z(total, SMALL, s, &s);
+            printf_z(total, SMALL, &s);
         else if (min == l)
             printf_l(total, LARGE, l, &l);
+    }
 }
 
 void show_alloc_mem()
