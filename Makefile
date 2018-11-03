@@ -6,7 +6,7 @@
 #    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
-#    Updated: 2018/11/02 20:05:38 by mmoullec         ###   ########.fr        #
+#    Updated: 2018/11/03 12:03:11 by mmoullec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,7 @@ SRC_PATH= src
 SRC_NAME= \
 		malloc.c \
 		init_env.c \
-		set_tiny.c \
-		set_small.c \
+		set_zone.c \
 		tiny_small_malloc.c \
 		large_m.c \
 		mmmap.c \

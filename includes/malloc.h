@@ -17,6 +17,10 @@
 #define FREE(x) ft_free(x)
 #define REALLOC ft_realloc
 
+#define _ 0
+
+#define MALLOC_TYPE int
+
 #define T_RSIZE 256 * 4096 // 512 * pagesize = 1048576 taille zone
 #define T_MSIZE 512 // tiny Maxsize
 
@@ -70,9 +74,9 @@ struct s_env {
     int initialized;
     char env;
     size_t pagesize;
-    t_zone* tiny;
-    t_zone* small;
-    t_chunk* large;
+    t_zone* tiny_zone;
+    t_zone* small_zone;
+    t_chunk* large_zone;
 };
 typedef struct s_env t_env;
 
@@ -84,19 +88,19 @@ void* ft_realloc(void* ptr, size_t size);
 void ft_free(void* ptr);
 
 int init_env();
-void* set_tiny();
-void* set_small();
+
+t_zone* set_zone(MALLOC_TYPE);
 
 void* map(size_t size);
 int unmap(void* ptr, size_t size);
 
-void* tiny_small_malloc(size_t size);
-void* large_m(size_t size);
+void* tiny_small_malloc(size_t);
+void* large_malloc(size_t);
 
-void* search_free_chunk(t_zone* zone, int type, size_t size);
-void* expand_zone(t_zone* zone, int type, size_t size);
-void* split_block(t_zone* cz, t_chunk* cc, int t, size_t size);
-void* fusion_block(t_zone* cz, t_chunk* cc, int t, size_t size);
+void* search_free_chunk(t_zone*, int, size_t);
+void* expand_zone(t_zone*, int, size_t);
+void* split_block(t_zone*, t_chunk*, int, size_t);
+void* fusion_block(t_zone*, t_chunk*, int, size_t);
 
 int in_chunk(t_chunk* z_head, t_chunk* searched_chunk);
 

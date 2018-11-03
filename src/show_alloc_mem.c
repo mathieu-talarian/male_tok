@@ -42,7 +42,7 @@ static void* addr_min(void* tiny, void* small, void* large)
     l = 0;
     max = 0;
     max = (UL)t + (UL)s + (UL)s + 1;
-    printf("%p - %p - %p\n", g_env.tiny, g_env.small, g_env.large);
+    printf("%p - %p - %p\n", g_env.tiny_zone, g_env.small_zone, g_env.large_zone);
     t = tiny ? (UL)tiny : max;
     s = small ? (UL)small : max;
     l = large ? (UL)large : max;
@@ -143,9 +143,9 @@ static void print_zones(UL* total)
     t_zone* s;
     t_chunk* l;
 
-    t = g_env.tiny;
-    s = g_env.small;
-    l = g_env.large;
+    t = g_env.tiny_zone;
+    s = g_env.small_zone;
+    l = g_env.large_zone;
     while ((min = addr_min(t, s, l))) {
         if (min == t)
             printf_z(total, TINY, &t);

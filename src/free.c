@@ -37,7 +37,7 @@ static int in_zone(t_zone* head, t_chunk* chunk)
 
 static int check_zone(t_chunk* chunk)
 {
-    return (in_zone(g_env.tiny, chunk) || in_zone(g_env.small, chunk));
+    return (in_zone(g_env.tiny_zone, chunk) || in_zone(g_env.small_zone, chunk));
 }
 
 static void unmap_chunk(t_chunk* current)
@@ -51,11 +51,11 @@ static void unmap_chunk(t_chunk* current)
         previous->next = next;
     if (next)
         next->previous = previous;
-    if (g_env.large == current)
-        g_env.large = current->next;
+    if (g_env.large_zone == current)
+        g_env.large_zone = current->next;
     unmap((void*)current, current->size + sizeof(t_chunk));
     if (!previous && !next)
-        g_env.large = NULL;
+        g_env.large_zone = NULL;
 }
 
 void ft_free(void* ptr)
@@ -70,7 +70,7 @@ void ft_free(void* ptr)
     if (check_zone(chunk)) {
         FREE_IT(chunk->free);
         // defrag();
-    } else if (in_chunk(g_env.large, chunk)) {
+    } else if (in_chunk(g_env.large_zone, chunk)) {
         unmap_chunk(chunk);
         // large malloc -> munmap
     }

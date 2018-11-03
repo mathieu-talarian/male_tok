@@ -1,11 +1,13 @@
 #include "malloc.h"
 
-static void* create_large_chunk(size_t size)
+
+
+static inline void* _large_malloc(size_t size)
 {
     t_chunk* cur;
     t_chunk* new;
 
-    cur = g_env.large;
+    cur = g_env.large_zone;
     size = (((size + sizeof(t_chunk)) / g_env.pagesize) + 1) * g_env.pagesize;
     if ((new = map(size)) != NULL) {
         new->size = size - sizeof(t_chunk);
@@ -19,15 +21,13 @@ static void* create_large_chunk(size_t size)
             cur->next = new;
             new->previous = cur;
         } else
-            g_env.large = new;
+            g_env.large_zone = new;
         return ((void*)(new + 1));
     }
     return (NULL);
 }
 
-void* large_m(size_t size)
+void* large_malloc(size_t size)
 {
-    if (D)
-        printf("LARGE MALLOC\n");
-    return (create_large_chunk(size));
+    return (_large_malloc(size));
 }
