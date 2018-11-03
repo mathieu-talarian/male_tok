@@ -1,29 +1,24 @@
 #include "malloc.h"
 
-t_env g_env = {0, 0, NULL};
-int g_cpt[3] = {0, 0, 0};
+t_env g_env = { 0, 0, 0, NULL, NULL, NULL };
+int g_cpt[3] = { 0, 0, 0 };
 
-static int get_type(size_t size)
+static inline t_malloc_function
+get_function(size_t size)
 {
-    if (size <= T_MSIZE)
-        return TINY;
-    if (size <= S_MSIZE)
-        return SMALL;
-    return LARGE;
+    return size <= S_MSIZE ? tiny_small_malloc : large_m;
 }
 
-void *ft_malloc(size_t size)
+/** malloc */
+void* ft_malloc(size_t size)
 {
-    void *ret;
-
     if (size == 0)
         return (NULL);
-    if (g_env.tiny == NULL)
-    {
+    if (g_env.initialized == 0) {
         if (!debug())
             return (NULL);
         if (!init_env())
             return (NULL);
     }
-    return g_env.func_m[get_type(size)](size);
+    return get_function(size)(size);
 }

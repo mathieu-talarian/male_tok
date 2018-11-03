@@ -1,3 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
+#    Updated: 2018/11/02 20:05:38 by mmoullec         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
 NAME= malloc
 SRC_PATH= src
 SRC_NAME= \
@@ -5,8 +22,7 @@ SRC_NAME= \
 		init_env.c \
 		set_tiny.c \
 		set_small.c \
-		tiny_m.c \
-		small_m.c\
+		tiny_small_malloc.c \
 		large_m.c \
 		mmmap.c \
 		search_free_chunk.c \
@@ -26,7 +42,8 @@ OBJ_PATH= obj
 IC = -Iincludes
 
 CC = gcc
-#CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
+OFLAGS = -g3 -fsanitize=address 
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -42,17 +59,17 @@ $(NAME): $(OBJ)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 		@mkdir $(OBJ_PATH) 2> /dev/null || true
-		$(CC) $(CFLAGS) $(IC) -o $@ -c $<
+		$(CC) $(CFLAGS) $(OFLAGS) $(IC) -o $@ -c $<
 
 test: .libft $(OBJ)
-	$(CC) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
+	$(CC) $(CFLAGS) $(OFLAGS) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
 	./malloc
 
 clean:
 	@rm -fv $(OBJ)
 	@rmdir -v $(OBJ_PATH) 2> /dev/null || true
 
-fclean: clean
+fclean: clean 
 	@rm -rfv malloc
 
 .libft:

@@ -1,22 +1,23 @@
 #include "malloc.h"
 
-#define CZ current_zone
-#define NZ new_zone
-
-void *expand_zone(t_zone *zone, int type, size_t size)
+static inline t_zone* set_new_zone(int type)
 {
-    t_zone *current_zone;
-    t_zone *new_zone;
+    return type <= TINY ? (t_zone*)set_tiny() : (t_zone*)set_small();
+}
 
-    NZ = NULL;
-    CZ = zone;
-    while (CZ->next)
-        CZ = CZ->next;
-    if ((NZ = set_tiny()))
-    {
-        CZ->next = NZ;
-        NZ->previous = CZ;
-        return (split_block(NZ, NZ->head, type, size));
-    }
-    return NULL;
+void* expand_zone(t_zone* zone, int type, size_t size)
+{
+    t_zone* current_zone;
+    t_zone* new_zone;
+
+    new_zone = NULL;
+    current_zone = zone;
+
+    if ((new_zone = set_new_zone(type)) == NULL)
+        return NULL;
+    while (current_zone->next)
+        current_zone = current_zone->next;
+    current_zone->next = new_zone;
+    new_zone->previous = current_zone;
+    return (split_block(new_zone, new_zone->head, type, size));
 }
