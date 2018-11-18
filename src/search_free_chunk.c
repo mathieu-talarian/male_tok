@@ -4,7 +4,6 @@ void *fusion_block(t_zone *cz, t_chunk *chunk, int t, size_t size)
 {
     t_chunk *tmp;
 
-    printf("%p\n", cz);
     tmp = chunk->next;
     chunk->size += tmp->size + sizeof(t_chunk);
     chunk->next = tmp->next;
@@ -25,12 +24,11 @@ void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
     else if (t == SMALL)
         res = TINY_MAX_SIZE;
     else
-        res = TINY_MAX_SIZE;
+        res = SMALL_MAX_SIZE;
     if (cc->size > size + sizeof(t_chunk) + res)
     {
         new = (void *) cc + sizeof(t_chunk) + size;
-        new->free = 0;
-        FREE_IT(new->free);
+        new->free = 1;
         new->next = cc->next;
         if (new->next)
             new->next->previous = new;
@@ -41,14 +39,12 @@ void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
         new->previous = cc;
         cc->size = size;
     }
-    UNFREE_IT(cc->free);
+    cc->free = 0;
     return (void *) (cc + 1);
 }
 
 void *search_free_chunk(t_zone *zone, int t, size_t size)
 {
-    if (zone == NULL)
-        zone = set_zone(t);
     t_zone * current_zone;
     t_chunk *current_chunk;
 
@@ -59,7 +55,7 @@ void *search_free_chunk(t_zone *zone, int t, size_t size)
     {
         while (current_chunk)
         {
-            if (IS_FREE(current_chunk->free) && current_chunk->size >= size)
+            if (current_chunk->free == 1 && current_chunk->size >= size)
                 return split_block(current_zone, current_chunk, t, size);
             current_chunk = current_chunk->next;
         }

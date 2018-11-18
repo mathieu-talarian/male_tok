@@ -23,7 +23,7 @@
 #define TINY_MAX_SIZE 512         // tiny Maxsize
 
 #define SMALL_PAGE_SIZE 2048 * 4096 // 8388608 taille zone
-#define SMALL_MAX_SIZE 15360 // small Maxsize
+#define SMALL_MAX_SIZE 15360        // small Maxsize
 
 #define TINY 0
 #define SMALL 1
@@ -42,11 +42,6 @@
 #define PS g_env.pagesize
 
 #define FLAGS PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE
-
-#define FREE_MASK (1 << 2)
-#define FREE_IT(x) (x |= FREE_MASK)
-#define UNFREE_IT(x) (x ^= FREE_MASK)
-#define IS_FREE(x) (x & FREE_MASK ? 1 : 0)
 
 struct s_chunk
 {

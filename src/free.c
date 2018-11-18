@@ -11,7 +11,7 @@ int in_chunk(t_chunk *z_head, t_chunk *searched_chunk)
             printf("%p | %p\n", cc, searched_chunk);
         if (cc == searched_chunk)
         {
-            FREE_IT(cc->free);
+            cc->free = 1;
             return 1;
         }
         cc = cc->next;
@@ -72,7 +72,7 @@ void ft_free(void *ptr)
     chunk = ((t_chunk *) ptr - 1);
     if (check_zone(chunk))
     {
-        FREE_IT(chunk->free);
+       chunk->free = 1;
         // defrag();
     }
     else if (in_chunk(g_env.large_zone, chunk))

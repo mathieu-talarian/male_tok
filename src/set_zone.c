@@ -2,7 +2,7 @@
 
 typedef size_t (*t_zone_size)();
 
-static size_t set_tiny_zone()
+static inline size_t set_tiny_zone()
 {
     size_t r;
     size_t q;
@@ -16,14 +16,14 @@ static size_t set_tiny_zone()
     return (size);
 }
 
-static size_t set_small_zone()
+static inline size_t set_small_zone()
 {
     size_t q;
     size_t r;
     size_t size;
 
     q = SMALL_PAGE_SIZE / PS;
-    r = (SMALL_PAGE_SIZE % PS) ? 1 : 0;
+    r = !(SMALL_PAGE_SIZE % PS);
     size = (q + r) * PS;
     while ((size - sizeof(t_zone)) / (SMALL_MAX_SIZE + sizeof(t_chunk)) < 100)
         size += PS;
@@ -38,8 +38,7 @@ static inline t_zone *_set_zone(t_zone **zone, size_t size)
     (*zone)->previous = NULL;
     (*zone)->head = (void *) ((*zone) + 1);
     (*zone)->head->size = size - sizeof(t_zone) - sizeof(t_chunk);
-    (*zone)->head->free = 0;
-    FREE_IT((*zone)->head->free);
+    (*zone)->head->free = 1;
     (*zone)->head->next = NULL;
     (*zone)->head->previous = NULL;
     (*zone)->tail = (*zone)->head;

@@ -10,8 +10,7 @@ static inline void *_large_malloc(size_t size)
     if ((new = map(size)) != NULL)
     {
         new->size = size - sizeof(t_chunk);
-        new->free = 0;
-        FREE_IT(new->free);
+        new->free = 1;
         new->next = NULL;
         new->previous = NULL;
         if (cur)

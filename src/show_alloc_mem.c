@@ -132,7 +132,7 @@ static void printf_z(UL *total, int type, t_zone **zone)
     ft_putchar('\n');
     while (chunk)
     {
-        if (!IS_FREE(chunk->free))
+        if (!chunk->free)
             printf_c(chunk, total);
         chunk = chunk->next;
     }
