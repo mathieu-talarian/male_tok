@@ -1,13 +1,13 @@
 #include "malloc.h"
 
-static void* l_realloc(void* ptr, size_t size, t_chunk* chunk)
+static void *l_realloc(void *ptr, size_t size, t_chunk *chunk)
 {
     if (size <= chunk->size)
         return ptr;
     return (move_and_free(ptr, chunk->size, size));
 }
 
-void* large_realloc(void* ptr, t_chunk* chunk, size_t size)
+void *large_realloc(void *ptr, t_chunk *chunk, size_t size)
 {
     if (D)
         printf("Large realloc\n");

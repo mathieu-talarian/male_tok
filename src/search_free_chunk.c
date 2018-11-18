@@ -1,8 +1,8 @@
 #include "malloc.h"
 
-void* fusion_block(t_zone* cz, t_chunk* chunk, int t, size_t size)
+void *fusion_block(t_zone *cz, t_chunk *chunk, int t, size_t size)
 {
-    t_chunk* tmp;
+    t_chunk *tmp;
 
     printf("%p\n", cz);
     tmp = chunk->next;
@@ -15,20 +15,20 @@ void* fusion_block(t_zone* cz, t_chunk* chunk, int t, size_t size)
     return (split_block(cz, chunk, t, size));
 }
 
-void* split_block(t_zone* cz, t_chunk* cc, int t, size_t size)
+void *split_block(t_zone *cz, t_chunk *cc, int t, size_t size)
 {
-    t_chunk* new;
+    t_chunk *new;
     size_t res;
-
 
     if (t == TINY)
         res = 16;
     else if (t == SMALL)
-        res = T_MSIZE;
+        res = TINY_MAX_SIZE;
     else
-        res = S_MSIZE;
-    if (cc->size > size + sizeof(t_chunk) + res) {
-        new = (void*)cc + sizeof(t_chunk) + size;
+        res = TINY_MAX_SIZE;
+    if (cc->size > size + sizeof(t_chunk) + res)
+    {
+        new = (void *) cc + sizeof(t_chunk) + size;
         new->free = 0;
         FREE_IT(new->free);
         new->next = cc->next;
@@ -42,19 +42,23 @@ void* split_block(t_zone* cz, t_chunk* cc, int t, size_t size)
         cc->size = size;
     }
     UNFREE_IT(cc->free);
-    return (void*)(cc + 1);
+    return (void *) (cc + 1);
 }
 
-void* search_free_chunk(t_zone* zone, int t, size_t size)
+void *search_free_chunk(t_zone *zone, int t, size_t size)
 {
-    t_zone* current_zone;
-    t_chunk* current_chunk;
+    if (zone == NULL)
+        zone = set_zone(t);
+    t_zone * current_zone;
+    t_chunk *current_chunk;
 
     current_zone = zone;
     if (current_zone)
         current_chunk = current_zone->head;
-    while (current_zone) {
-        while (current_chunk) {
+    while (current_zone)
+    {
+        while (current_chunk)
+        {
             if (IS_FREE(current_chunk->free) && current_chunk->size >= size)
                 return split_block(current_zone, current_chunk, t, size);
             current_chunk = current_chunk->next;

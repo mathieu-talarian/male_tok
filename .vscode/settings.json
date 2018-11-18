@@ -1,7 +1,5 @@
 {
     "files.associations": {
-        "malloc.h": "c",
-        "stdio.h": "c",
-        "errno.h": "c"
+        "malloc.h": "c"
     }
 }

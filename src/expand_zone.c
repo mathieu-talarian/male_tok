@@ -1,9 +1,10 @@
 #include "malloc.h"
 
-void* expand_zone(t_zone* zone, int type, size_t size)
+void *expand_zone(t_zone *zone, int type, size_t size)
 {
-    t_zone* current_zone;
-    t_zone* new_zone;
+    printf("TESS");
+    t_zone *current_zone;
+    t_zone *new_zone;
 
     new_zone = NULL;
     current_zone = zone;

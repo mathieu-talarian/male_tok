@@ -1,7 +1,6 @@
 #include "malloc.h"
-#include <stdio.h>
 
-int main(void)
+int main()
 {
     int   i;
     char *addr;
@@ -13,6 +12,5 @@ int main(void)
         addr[0] = 42;
         i++;
     }
-    // show_alloc_mem();
     return (0);
 }

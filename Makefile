@@ -15,7 +15,7 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME= malloc
+NAME= libft_malloc_$(HOSTTYPE).so
 SRC_PATH= src
 SRC_NAME= \
 		malloc.c \
@@ -34,15 +34,15 @@ SRC_NAME= \
 		small_realloc.c \
 		large_r.c \
 		realloc_utils.c \
-		show_alloc_mem.c
+		show_alloc_mem.c \
+		export.c
 
 OBJ_PATH= obj
 
-IC = -Iincludes
+IC = -Iincludes -I$(LIBFTDIR)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-OFLAGS = -g3 -fsanitize=address 
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -61,15 +61,29 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 		$(CC) $(CFLAGS) $(OFLAGS) $(IC) -o $@ -c $<
 
 test: .libft $(OBJ)
-	$(CC) $(CFLAGS) $(OFLAGS) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
-	./malloc
+	$(CC) main_test/main.c obj/*.o $(IC) -o malloc -Llib/libft -lft
+	/usr/bin/time -l ./malloc
+
+$(NAME): $(OBJ)
+	make -C $(LIBFTDIR)
+	ln -F -s $(NAME) libft_malloc.so
+	$(CC) $(LDFLAGS) $(LDLIBS) -shared $^ -o $@ -L$(LIBFTDIR) -lft
+
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	@mkdir $(OBJ_PATH) 2> /dev/null || true
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $< $(IC) 
 
 clean:
+	@make clean -C $(LIBFTDIR)
 	@rm -fv $(OBJ)
-	@rmdir -v $(OBJ_PATH) 2> /dev/null || true
+	@rmdir $(OBJ_PATH) 2> /dev/null || true
 
-fclean: clean 
-	@rm -rfv malloc
+fclean : clean
+	@make fclean -C $(LIBFTDIR)
+	@rm -fv $(NAME)
+	@rm -fv libft_malloc.so
+
+re : fclean all
 
 .libft:
 	make -C $(LIBFTDIR)
@@ -79,5 +93,3 @@ fclean: clean
 	make fclean -C $(LIBFTDIR)
 
 retest: fclean test
-
-re: fclean all

@@ -12,7 +12,7 @@
 
 NAME = libft.a
 CC = gcc -Wall -Werror -Wextra
-SRC = ft_atoi.c\
+SRC_NAME = ft_atoi.c\
 	ft_bzero.c\
 	ft_char_cmp.c\
 ft_count_words.c\
@@ -83,22 +83,29 @@ ft_atoi_base.c\
 ft_convert_base.c\
 ft_len_nb.c
 
+OBJ_NAME = $(SRC_NAME:.c=.o)
 
-OBJ = $(SRC:.c=.o)
+OBJ_PATH= obj
+SRC_PATH= src
+
+SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH)/,$(OBJ_NAME))
 
 all: $(NAME)
 
-$(NAME):
-	@$(CC) -c $? $(SRC) -I.
+$(NAME): $(OBJ)
 	@ar rc $(NAME) $? $(OBJ)
 	@ranlib $(NAME)
 
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+		@mkdir $(OBJ_PATH) 2> /dev/null || true
+		$(CC) -Iincludes -o $@ -c $<
 
 clean:
-	@/bin/rm -f $(OBJ)
+	@rm -fv $(OBJ)
 
 fclean: clean
-	@/bin/rm $(NAME)
+	@rm -fv $(NAME)
 
 re: fclean all
 
