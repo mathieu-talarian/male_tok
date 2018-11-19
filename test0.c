@@ -1,12 +1,12 @@
+#include "malloc.h"
+
 int main()
 {
-    int   i;
-    char *addr;
-
-    i = 0;
-    while (i < 1024)
-    {
-        i++;
-    }
+    ft_malloc(1024);
+    ft_malloc(1024 * 32);
+    ft_malloc(1024 * 1024);
+    ft_malloc(1024 * 1024 * 16);
+    ft_malloc(1024 * 1024 * 128);
+    ft_show_alloc_mem();
     return (0);
 }

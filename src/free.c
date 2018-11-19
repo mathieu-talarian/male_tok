@@ -7,8 +7,6 @@ int in_chunk(t_chunk *z_head, t_chunk *searched_chunk)
     cc = z_head;
     while (cc)
     {
-        if (D)
-            printf("%p | %p\n", cc, searched_chunk);
         if (cc == searched_chunk)
         {
             cc->free = 1;
@@ -24,13 +22,8 @@ static int in_zone(t_zone *head, t_chunk *chunk)
     t_zone *current_zone;
 
     current_zone = head;
-    if (D)
-        printf("in zone\n");
     while (current_zone)
     {
-        if (D)
-            printf("%p | %p | %p | %d\n", current_zone->head, current_zone->tail, chunk,
-                   current_zone->head <= chunk);
         if (current_zone->head <= chunk && chunk <= current_zone->tail)
             return in_chunk(current_zone->head, chunk) ? 1 : 0;
         current_zone = current_zone->next;
@@ -63,8 +56,6 @@ static void unmap_chunk(t_chunk *current)
 
 void ft_free(void *ptr)
 {
-    if (D)
-        printf("ft_free\n");
     t_chunk *chunk;
 
     if (!ptr)
@@ -72,7 +63,7 @@ void ft_free(void *ptr)
     chunk = ((t_chunk *) ptr - 1);
     if (check_zone(chunk))
     {
-       chunk->free = 1;
+        chunk->free = 1;
         // defrag();
     }
     else if (in_chunk(g_env.large_zone, chunk))

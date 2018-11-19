@@ -2,7 +2,6 @@
 
 void *expand_zone(t_zone *zone, int type, size_t size)
 {
-    printf("TESS");
     t_zone *current_zone;
     t_zone *new_zone;
 

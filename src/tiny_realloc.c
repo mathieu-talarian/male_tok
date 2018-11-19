@@ -2,8 +2,6 @@
 
 static void *t_realloc(void *ptr, size_t size, t_zone *zone, t_chunk *chunk)
 {
-    if (D)
-        printf("%p\n", zone);
     if (size <= chunk->size && size <= TINY_MAX_SIZE)
         return split_block(zone, chunk, TINY, size);
     if (size <= TINY_MAX_SIZE)

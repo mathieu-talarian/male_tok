@@ -155,11 +155,9 @@ void *min_add(void *tiny, void *small, void *large)
     UL l;
     UL max;
 
-    // printf("%p - %p - %p\n", tiny, small, large);
     t = (UL) tiny;
     s = (UL) small;
     l = (UL) large;
-    // printf("%llu - %llu - %llu\n", t, s, l);
     max = ull_max(t, s, l);
     if (max == 0)
         return (NULL);

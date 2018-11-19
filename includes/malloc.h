@@ -20,22 +20,16 @@
 #define MALLOC_TYPE int
 
 #define TINY_PAGE_SIZE 256 * 4096 // 512 * pagesize = 1048576 taille zone
-#define TINY_MAX_SIZE 512         // tiny Maxsize
+#define TINY_MAX_SIZE 512 - sizeof(t_zone) // tiny Maxsize
 
-#define SMALL_PAGE_SIZE 2048 * 4096 // 8388608 taille zone
-#define SMALL_MAX_SIZE 15360        // small Maxsize
+#define SMALL_PAGE_SIZE 2048 * 4096           // 8388608 taille zone
+#define SMALL_MAX_SIZE 15360 - sizeof(t_zone) // small Maxsize
 
 #define TINY 0
 #define SMALL 1
 #define LARGE 2
 
 #define UL unsigned long long
-
-#define DEBUG_MASK (1 << 3)
-#define DEBUG_ON(x) (x |= DEBUG_MASK)
-#define DEBUG_OFF(x) (x ^= DEBUG_MASK)
-#define IS_DEBUG(x) (x & DEBUG_MASK ? 1 : 0)
-#define D IS_DEBUG(g_env.env)
 
 #define E g_env
 #define Z t_zone
@@ -75,45 +69,35 @@ struct s_env
     t_chunk *large_zone;
 };
 typedef struct s_env t_env;
+extern int           g_cpt[3];
+extern t_env         g_env;
+t_zone *             set_zone(MALLOC_TYPE);
+void *               ft_malloc(size_t size);
+void *               ft_realloc(void *ptr, size_t size);
+void                 ft_free(void *ptr);
+int                  init_env();
+void *               map(size_t size);
+int                  unmap(void *ptr, size_t size);
+void *               tiny_small_malloc(size_t);
+void *               large_malloc(size_t);
+void *               search_free_chunk(t_zone *, int, size_t);
+void *               expand_zone(t_zone *, int, size_t);
+void *               split_block(t_zone *, t_chunk *, int, size_t);
+void *               fusion_block(t_zone *, t_chunk *, int, size_t);
+int                  in_chunk(t_chunk *z_head, t_chunk *searched_chunk);
+void *               tiny_realloc(void *ptr, t_chunk *chunk, size_t size);
+void *               small_realloc(void *ptr, t_chunk *chunk, size_t size);
+void *               large_realloc(void *ptr, t_chunk *chunk, size_t size);
+size_t               have_enough_space(t_chunk *chunk, size_t size);
+void *               find_zone(t_zone *head, t_chunk *searched);
+void *               find_chunk(t_chunk *head, t_chunk *searched);
+void *               move_and_free(void *ptr, size_t chunk_size, size_t size);
+void                 defrag();
+int                  debug();
+void                 print_mem_addr(void *);
+void                 printf_chunk_infos(t_chunk *, unsigned long long *);
+void                 printf_zone_infos(t_zone **, unsigned long long *, int);
+void                 printf_large_infos(t_chunk **chunk, unsigned long long *);
+void                 ft_show_alloc_mem();
 
-extern int   g_cpt[3];
-extern t_env g_env;
-
-void *ft_malloc(size_t size);
-void *ft_realloc(void *ptr, size_t size);
-void  ft_free(void *ptr);
-
-int init_env();
-
-t_zone *set_zone(MALLOC_TYPE);
-
-void *map(size_t size);
-int   unmap(void *ptr, size_t size);
-
-void *tiny_small_malloc(size_t);
-void *large_malloc(size_t);
-
-void *search_free_chunk(t_zone *, int, size_t);
-void *expand_zone(t_zone *, int, size_t);
-void *split_block(t_zone *, t_chunk *, int, size_t);
-void *fusion_block(t_zone *, t_chunk *, int, size_t);
-
-int in_chunk(t_chunk *z_head, t_chunk *searched_chunk);
-
-// REALLOC
-void *tiny_realloc(void *ptr, t_chunk *chunk, size_t size);
-void *small_realloc(void *ptr, t_chunk *chunk, size_t size);
-void *large_realloc(void *ptr, t_chunk *chunk, size_t size);
-
-size_t have_enough_space(t_chunk *chunk, size_t size);
-
-void *find_zone(t_zone *head, t_chunk *searched);
-void *find_chunk(t_chunk *head, t_chunk *searched);
-void *move_and_free(void *ptr, size_t chunk_size, size_t size);
-
-void show_alloc_mem();
-
-void defrag();
-
-int debug();
 #endif

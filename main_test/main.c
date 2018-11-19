@@ -1,18 +1,18 @@
 #include "malloc.h"
-#include <stdio.h>
+#define M (1024 * 1024)
 
-int main(void)
+void print(char *s)
 {
-    int   i;
+    write(1, s, strlen(s));
+}
+
+int main()
+{
     char *addr;
 
-    i = 0;
-    while (i < 1024)
-    {
-        addr = (char *) ft_malloc(1024);
-        addr[0] = 42;
-        i++;
-    }
-    // show_alloc_mem();
-    return (0);
+    addr = ft_malloc(16);
+    ft_free(NULL);
+    ft_free((void *) addr + 5);
+    if (ft_realloc((void *) addr + 5, 10) == NULL)
+        print("Bonjours\n");
 }

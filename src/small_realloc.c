@@ -2,8 +2,7 @@
 
 static void *s_realloc(void *ptr, size_t size, t_zone *zone, t_chunk *chunk)
 {
-    if (D)
-        printf("%p\n", zone);
+
     if (size <= chunk->size && size <= SMALL_MAX_SIZE)
         return split_block(zone, chunk, SMALL, size);
     if (size <= SMALL_MAX_SIZE)
@@ -15,8 +14,7 @@ static void *s_realloc(void *ptr, size_t size, t_zone *zone, t_chunk *chunk)
 void *small_realloc(void *ptr, t_chunk *chunk, size_t size)
 {
     t_zone *zone;
-    if (D)
-        printf("Small realloc\n");
+
     if ((zone = find_zone(g_env.small_zone, chunk)))
         return s_realloc(ptr, size, zone, chunk);
     return NULL;

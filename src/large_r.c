@@ -9,8 +9,7 @@ static void *l_realloc(void *ptr, size_t size, t_chunk *chunk)
 
 void *large_realloc(void *ptr, t_chunk *chunk, size_t size)
 {
-    if (D)
-        printf("Large realloc\n");
+
     if (in_chunk(g_env.large_zone, chunk))
         return l_realloc(ptr, size, chunk);
     return NULL;

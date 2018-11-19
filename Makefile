@@ -6,7 +6,7 @@
 #    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
-#    Updated: 2018/11/03 12:03:11 by mmoullec         ###   ########.fr        #
+#    Updated: 2018/11/19 22:30:05 by mmoullec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC_NAME= \
 		expand_zone.c \
 		free.c \
 		defrag.c \
-		debug.c \
+		print_utils.c \
+		print_b_utils.c \
 		realloc.c \
 		tiny_realloc.c \
 		small_realloc.c \
