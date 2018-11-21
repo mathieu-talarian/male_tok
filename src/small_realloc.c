@@ -2,7 +2,6 @@
 
 static void *s_realloc(void *ptr, size_t size, t_zone *zone, t_chunk *chunk)
 {
-
     if (size <= chunk->size && size <= SMALL_MAX_SIZE)
         return split_block(zone, chunk, SMALL, size);
     if (size <= SMALL_MAX_SIZE)

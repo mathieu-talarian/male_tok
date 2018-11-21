@@ -1,39 +1,92 @@
 #include "malloc.h"
 
+void munmap_zone(t_zone **zone)
+{
+    t_zone *prev;
+    t_zone *next;
+
+    prev = (*zone)->previous;
+    next = (*zone)->next;
+    if (prev)
+        prev->next = next;
+    if (next)
+        next->previous = prev;
+    unmap((*zone), (*zone)->head->size + sizeof(t_zone) + sizeof(t_chunk));
+}
+
+void re_zone(t_zone **zone, t_chunk **chunk)
+{
+    if (!(*chunk)->next)
+        (*zone)->tail = (*chunk);
+    if (!(*chunk)->previous)
+        (*zone)->head = (*chunk);
+    if ((*zone)->head == (*zone)->tail && (*zone)->previous)
+        munmap_zone(zone);
+}
+
+void prev_defrag(t_chunk **chunk, t_chunk **prev)
+{
+    (*prev) = (*chunk)->previous;
+    (*prev)->size += (*chunk)->size + sizeof(t_chunk);
+    (*prev)->next = (*chunk)->next;
+    if ((*chunk)->next)
+        (*chunk)->next->previous = (*prev);
+    (*chunk) = (*prev);
+}
+
+void next_defrag(t_chunk **chunk)
+{
+    t_chunk *next;
+    next = (*chunk)->next;
+    (*chunk)->size += next->size + sizeof(t_chunk);
+    (*chunk)->next = next->next;
+    if (next->next != NULL)
+        next->next->previous = (*chunk);
+}
+
+int defrag(t_zone *zone, t_chunk *chunk)
+{
+    if (chunk->previous && chunk->previous->free)
+        prev_defrag(&chunk, &chunk->previous);
+    if (chunk->next && chunk->next->free)
+        next_defrag(&chunk);
+    re_zone(&zone, &chunk);
+    return 1;
+}
+
 int in_chunk(t_chunk *z_head, t_chunk *searched_chunk)
 {
-    t_chunk *cc;
+    t_chunk **indirect;
 
-    cc = z_head;
-    while (cc)
+    indirect = &z_head;
+    while ((*indirect) != searched_chunk)
     {
-        if (cc == searched_chunk)
-        {
-            cc->free = 1;
-            return 1;
-        }
-        cc = cc->next;
+        if (!(*indirect))
+            return 0;
+        (*indirect) = (*indirect)->next;
     }
-    return 0;
+    return 1;
 }
 
-static int in_zone(t_zone *head, t_chunk *chunk)
+static t_zone *in_zone(t_zone *head, t_chunk *chunk)
 {
-    t_zone *current_zone;
+    t_zone **indirect;
 
-    current_zone = head;
-    while (current_zone)
+    indirect = &head;
+    while ((*indirect)->head < chunk && chunk < (*indirect)->tail)
     {
-        if (current_zone->head <= chunk && chunk <= current_zone->tail)
-            return in_chunk(current_zone->head, chunk) ? 1 : 0;
-        current_zone = current_zone->next;
+        if (!(*indirect))
+            return NULL;
+        indirect = &(*indirect)->next;
     }
-    return 0;
+    return in_chunk((*indirect)->head, chunk) ? (*indirect) : NULL;
 }
 
-static int check_zone(t_chunk *chunk)
+static t_zone *check_zone(t_chunk *chunk)
 {
-    return (in_zone(g_env.tiny_zone, chunk) || in_zone(g_env.small_zone, chunk));
+    t_zone *ret;
+    ret = in_zone(g_env.tiny_zone, chunk);
+    return ret ? ret : in_zone(g_env.small_zone, chunk);
 }
 
 static void unmap_chunk(t_chunk *current)
@@ -57,19 +110,16 @@ static void unmap_chunk(t_chunk *current)
 void ft_free(void *ptr)
 {
     t_chunk *chunk;
-
+    t_zone * zone;
     if (!ptr)
         return;
     chunk = ((t_chunk *) ptr - 1);
-    if (check_zone(chunk))
+    if ((zone = check_zone(chunk)))
     {
         chunk->free = 1;
-        // defrag();
+        defrag(zone, chunk);
     }
     else if (in_chunk(g_env.large_zone, chunk))
-    {
         unmap_chunk(chunk);
-        // large malloc -> munmap
-    }
     return;
 }
