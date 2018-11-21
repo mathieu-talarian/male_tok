@@ -6,7 +6,7 @@
 #    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
-#    Updated: 2018/11/19 22:30:05 by mmoullec         ###   ########.fr        #
+#    Updated: 2018/11/21 20:41:52 by mmoullec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ NAME= libft_malloc_$(HOSTTYPE).so
 SRC_PATH= src
 SRC_NAME= \
 		malloc.c \
-		init_env.c \
 		set_zone.c \
 		tiny_small_malloc.c \
 		large_m.c \

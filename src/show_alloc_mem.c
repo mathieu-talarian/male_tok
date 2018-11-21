@@ -6,7 +6,7 @@
 /*   By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 22:20:58 by mmoullec          #+#    #+#             */
-/*   Updated: 2018/11/19 23:36:26 by mmoullec         ###   ########.fr       */
+/*   Updated: 2018/11/21 19:48:45 by mmoullec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ static void *addr_min(void *tiny, void *small, void *large)
     t = 0;
     s = 0;
     l = 0;
-    max = 0;
-    max = (UL) t + (UL) s + (UL) s + 1;
+    max = (UL) tiny + (UL) small + (UL) large + 1;
     t = tiny ? (UL) tiny : max;
     s = small ? (UL) small : max;
     l = large ? (UL) large : max;
@@ -71,7 +70,7 @@ static void print_zones(unsigned long long *total)
     small_head = g_env.small_zone;
     large_head = g_env.large_zone;
     while ((min_addr = addr_min(tiny_head, small_head, large_head)))
-    { 
+    {
         if (min_addr == tiny_head)
             printf_zone_infos(&tiny_head, total, TINY);
         else if (min_addr == small_head)

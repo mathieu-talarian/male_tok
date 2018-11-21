@@ -61,8 +61,7 @@ typedef void *(*t_realloc_function)(void *, size_t);
 
 struct s_env
 {
-    int      initialized;
-    char     env;
+    char     initialized;
     size_t   pagesize;
     t_zone * tiny_zone;
     t_zone * small_zone;
@@ -100,4 +99,8 @@ void                 printf_zone_infos(t_zone **, unsigned long long *, int);
 void                 printf_large_infos(t_chunk **chunk, unsigned long long *);
 void                 ft_show_alloc_mem();
 
+void init_tiny();
+void init_small();
+typedef void (*t_init_zone_function)();
+extern t_init_zone_function g_init_zone[2];
 #endif

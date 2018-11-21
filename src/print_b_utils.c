@@ -6,7 +6,7 @@
 /*   By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 22:25:48 by mmoullec          #+#    #+#             */
-/*   Updated: 2018/11/19 22:35:17 by mmoullec         ###   ########.fr       */
+/*   Updated: 2018/11/21 19:51:40 by mmoullec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ void printf_zone_infos(t_zone **zone, UL *total, int type)
             printf_chunk_infos(chunk, total);
         chunk = chunk->next;
     }
+    ft_putendl("");
     *zone = z->next;
 }
 
 void printf_large_infos(t_chunk **chunk, unsigned long long *total)
 {
     ft_putstr("LARGE : ");
+    print_mem_addr((void *) *chunk);
+ft_putendl("");
     printf_chunk_infos(*chunk, total);
     ft_putendl("");
     *chunk = (*chunk)->next;
