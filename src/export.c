@@ -19,3 +19,8 @@ extern void show_alloc_mem()
 {
     return ft_show_alloc_mem();
 }
+
+extern void *calloc(size_t nb, size_t size)
+{
+    return ft_calloc(nb, size);
+}

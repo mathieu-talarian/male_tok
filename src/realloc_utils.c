@@ -51,8 +51,12 @@ void *move_and_free(void *ptr, size_t old_size, size_t new_size)
 {
     void *new;
 
+    pthread_mutex_unlock(&g_mutex);
     new = MALLOC(new_size);
+    pthread_mutex_lock(&g_mutex);
     new = realloc_copy_mem(new, ptr, old_size, new_size);
+    pthread_mutex_unlock(&g_mutex);
     FREE(ptr);
+    pthread_mutex_lock(&g_mutex);
     return (new);
 }

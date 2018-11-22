@@ -5,7 +5,12 @@ static inline void *_ft_realloc(void *ptr, size_t size)
     t_chunk *chunk;
     void *   addr;
 
-    g_env.initialized == 0 ? init_env() : _;
+    pthread_mutex_lock(&g_mutex);
+    if (!g_env.initialized && !init_env())
+    {
+        pthread_mutex_unlock(&g_mutex);
+        return NULL;
+    }
     addr = NULL;
     chunk = ((t_chunk *) ptr - 1);
     if ((addr = tiny_realloc(ptr, chunk, size)))
@@ -14,6 +19,7 @@ static inline void *_ft_realloc(void *ptr, size_t size)
         ;
     else if ((addr = large_realloc(ptr, chunk, size)))
         ;
+    pthread_mutex_unlock(&g_mutex);
     return (addr);
 }
 

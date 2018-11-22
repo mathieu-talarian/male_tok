@@ -6,7 +6,7 @@
 #    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
-#    Updated: 2018/11/21 20:41:52 by mmoullec         ###   ########.fr        #
+#    Updated: 2018/11/22 02:18:58 by mmoullec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRC_NAME= \
 		large_r.c \
 		realloc_utils.c \
 		show_alloc_mem.c \
+		calloc.c \
 		export.c
 
 OBJ_PATH= obj

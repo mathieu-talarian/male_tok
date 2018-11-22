@@ -113,6 +113,7 @@ void ft_free(void *ptr)
     t_zone * zone;
     if (!ptr)
         return;
+    pthread_mutex_lock(&g_mutex);
     chunk = ((t_chunk *) ptr - 1);
     if ((zone = check_zone(chunk)))
     {
@@ -121,5 +122,5 @@ void ft_free(void *ptr)
     }
     else if (in_chunk(g_env.large_zone, chunk))
         unmap_chunk(chunk);
-    return;
+    pthread_mutex_unlock(&g_mutex);
 }

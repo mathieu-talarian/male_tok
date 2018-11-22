@@ -42,7 +42,6 @@ void build_new_chunk(t_zone **current_zone, t_chunk **current_chunk, size_t size
 
 void *split_block(t_zone *current_zone, t_chunk *current_chunk, int t, size_t size)
 {
-    t_chunk *new;
     size_t res;
 
     res = _res(t);
