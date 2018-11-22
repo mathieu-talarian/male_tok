@@ -71,7 +71,7 @@ typedef struct s_env   t_env;
 extern t_env           g_env;
 extern pthread_mutex_t g_mutex;
 t_zone *               set_zone(MALLOC_TYPE);
-void *                 ft_malloc(size_t size);
+void *                  ft_malloc(size_t size);
 void *                 ft_realloc(void *ptr, size_t size);
 void                   ft_free(void *ptr);
 int                    init_env();
