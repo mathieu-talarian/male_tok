@@ -6,7 +6,7 @@
 #    By: mmoullec <mmoullec@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/02 20:04:48 by mmoullec          #+#    #+#              #
-#    Updated: 2018/11/22 02:18:58 by mmoullec         ###   ########.fr        #
+#    Updated: 2019/01/15 19:24:08 by mmoullec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ SRC_NAME= \
 		realloc_utils.c \
 		show_alloc_mem.c \
 		calloc.c \
-		export.c
+		export.c \
+		min.c \
+		addr_min.c
 
 OBJ_PATH= obj
 

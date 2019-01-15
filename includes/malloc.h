@@ -29,7 +29,6 @@
 #define SMALL 1
 #define LARGE 2
 
-#define UL unsigned long long
 
 #define E g_env
 #define Z t_zone
@@ -39,20 +38,20 @@
 
 struct s_chunk
 {
-    size_t          size;
-    char            free;
-    struct s_chunk *next;
-    struct s_chunk *previous;
+	size_t          size;
+	char            free;
+	struct s_chunk *next;
+	struct s_chunk *previous;
 };
 
 typedef struct s_chunk t_chunk;
 
 struct s_zone
 {
-    t_chunk *      head;
-    t_chunk *      tail;
-    struct s_zone *previous;
-    struct s_zone *next;
+	t_chunk *      head;
+	t_chunk *      tail;
+	struct s_zone *previous;
+	struct s_zone *next;
 };
 typedef struct s_zone t_zone;
 
@@ -61,11 +60,11 @@ typedef void *(*t_realloc_function)(void *, size_t);
 
 struct s_env
 {
-    char     initialized;
-    size_t   pagesize;
-    t_zone * tiny_zone;
-    t_zone * small_zone;
-    t_chunk *large_zone;
+	char     initialized;
+	size_t   pagesize;
+	t_zone * tiny_zone;
+	t_zone * small_zone;
+	t_chunk *large_zone;
 };
 typedef struct s_env   t_env;
 extern t_env           g_env;
@@ -103,4 +102,8 @@ void  init_tiny();
 void  init_small();
 typedef void (*t_init_zone_function)();
 extern t_init_zone_function g_init_zone[2];
+void print_zones(unsigned long long *); 
+unsigned long long min(unsigned long long a, unsigned long long b, unsigned long long c);
+
+void show_alloc_mem();
 #endif
