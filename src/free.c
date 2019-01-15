@@ -6,7 +6,7 @@
 /*   By: mmoullec <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/15 18:00:22 by mmoullec          #+#    #+#             */
-/*   Updated: 2019/01/15 18:08:01 by mmoullec         ###   ########.fr       */
+/*   Updated: 2019/01/15 19:47:40 by mmoullec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static t_zone	*in_zone(t_zone *head, t_chunk *chunk)
 	{
 		if (!(*indirect))
 			return (NULL);
-		indirect = &(*indirect)->next;
+		(*indirect) = (*indirect)->next;
 	}
 	return (in_chunk((*indirect)->head, chunk) ? (*indirect) : NULL);
 }
