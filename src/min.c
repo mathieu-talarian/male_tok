@@ -14,7 +14,7 @@
 
 unsigned long long min(unsigned long long a, unsigned long long b, unsigned long long c)
 {
-	a = a < b ? a : b;
-	b = a < c ? a : c;
-	return (a);
+    a = a < b ? a : b;
+    a = a < c ? a : c;
+    return (a);
 }
